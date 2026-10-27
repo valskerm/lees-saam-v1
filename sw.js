@@ -1,6 +1,6 @@
 // Lees Saam service worker: keeps the app shell available offline.
 // Mic recognition still needs internet (Chrome sends audio to Google).
-const CACHE = 'lees-saam-v1';
+const CACHE = 'lees-saam-v2';
 const SHELL = ['./', './index.html', './manifest.webmanifest',
   './icons/icon-192.png', './icons/icon-512.png', './icons/icon-maskable-512.png', './icons/apple-touch-icon.png'];
 

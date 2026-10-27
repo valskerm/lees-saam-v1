@@ -180,6 +180,12 @@ th{color:var(--muted);font-weight:700}
 td.st{color:var(--sun);letter-spacing:1px}
 .muted{color:var(--muted)}
 .btnrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.kidrow{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line);flex-wrap:wrap}
+.kidrow .em{font-size:1.8rem}
+.kidrow .nm{flex:1;min-width:110px}
+.kidrow .nm small{display:block;color:var(--muted)}
+.ctl.small{min-height:42px;padding:8px 12px;font-size:.92rem}
+.ctl.warn{color:#D93A3F}
 </style>
 </head>
 <body>
@@ -312,6 +318,11 @@ td.st{color:var(--sun);letter-spacing:1px}
       <button class="ctl" id="testVoice">🔊 Toets stem</button>
       <span class="hint" id="voiceStatus"></span>
     </div>
+    <div class="field" style="margin-top:22px;margin-bottom:6px">
+      <label>Lesers</label>
+      <span class="hint">Begin ’n leser se vordering oor of verwyder die leser. ’n Grootmens moet dit eers bevestig.</span>
+    </div>
+    <div id="sKids"></div>
     <div class="row" style="justify-content:flex-end;margin-top:18px">
       <button class="primary" id="saveSettings">Stoor</button>
     </div>
@@ -778,21 +789,22 @@ $('who').addEventListener('cancel', e => { if(!kid()) e.preventDefault(); });
 $('kidPill').onclick = openWho;
 
 /* ---------- Grown-up gate ---------- */
-let gateAns = 0;
-function openGate(){
+let gateAns = 0, gatePass = null;
+function openGate(onPass){
+  gatePass = onPass || null;
   const a = 3 + Math.floor(Math.random()*7), b = 3 + Math.floor(Math.random()*7);
   gateAns = a*b; $('gateQ').textContent = `${a} × ${b} = ?`;
   $('gateA').value = ''; $('gateErr').textContent = '';
   $('gate').showModal(); setTimeout(()=>$('gateA').focus(), 50);
 }
 $('gateGo').onclick = () => {
-  if(parseInt($('gateA').value,10) === gateAns){ $('gate').close(); openTeacher(); }
+  if(parseInt($('gateA').value,10) === gateAns){ $('gate').close(); const f = gatePass; gatePass = null; if(f) f(); }
   else { $('gateErr').textContent = 'Nie reg nie. Probeer weer.'; openGateNewQ(); }
 };
 function openGateNewQ(){ const a = 3 + Math.floor(Math.random()*7), b = 3 + Math.floor(Math.random()*7); gateAns=a*b; $('gateQ').textContent = `${a} × ${b} = ?`; $('gateA').value=''; }
 $('gateA').addEventListener('keydown', e => { if(e.key==='Enter') $('gateGo').click(); });
 $('gateClose').onclick = () => $('gate').close();
-$('openTeacher').onclick = openGate;
+$('openTeacher').onclick = () => openGate(openTeacher);
 
 /* ---------- Teacher / parent view ---------- */
 let tKid = null;
@@ -929,7 +941,40 @@ $('page').addEventListener('touchstart', e => tx = e.touches[0].clientX, {passiv
 $('page').addEventListener('touchend', e => { if(tx===null) return; const dx = e.changedTouches[0].clientX - tx; if(dx > 80) goPrev(); tx = null; });
 
 /* settings */
+function renderSettingsKids(){
+  const host = $('sKids'); host.innerHTML = '';
+  const kids = kidsList();
+  if(!kids.length){ host.innerHTML = '<p class="muted">Nog geen lesers nie.</p>'; return; }
+  kids.forEach(k => {
+    const s = summary(k);
+    const row = document.createElement('div'); row.className = 'kidrow';
+    row.innerHTML = `<span class="em">${k.emoji}</span><span class="nm"><b>${esc(k.name)}</b><small>${s.stars} sterre, ${s.done} stories klaar</small></span>`;
+    const reset = document.createElement('button'); reset.className = 'ctl small'; reset.textContent = '↻ Begin oor';
+    reset.setAttribute('aria-label', 'Begin ' + k.name + ' se vordering oor');
+    reset.onclick = () => openGate(() => resetKid(k.id));
+    const del = document.createElement('button'); del.className = 'ctl small warn'; del.textContent = '✕ Verwyder';
+    del.setAttribute('aria-label', 'Verwyder ' + k.name);
+    del.onclick = () => openGate(() => removeKid(k.id));
+    row.append(reset, del); host.appendChild(row);
+  });
+}
+function resetKid(id){
+  const k = progress.profiles[id]; if(!k) return;
+  if(!confirm(`Vee al ${k.name} se sterre, oefenwoorde en leessessies uit? Dit kan nie ontdoen word nie.`)) return;
+  k.best = {}; k.stats = {}; k.history = []; saveProgress();
+  renderSettingsKids(); refreshVisible(); toast(`${k.name} begin van voor af`);
+}
+function removeKid(id){
+  const k = progress.profiles[id]; if(!k) return;
+  if(!confirm(`Verwyder ${k.name} en al die vordering? Dit kan nie ontdoen word nie.`)) return;
+  delete progress.profiles[id];
+  if(progress.current === id) progress.current = (kidsList()[0] || {}).id || null;
+  if(tKid === id) tKid = null;
+  saveProgress(); renderSettingsKids(); refreshVisible(); toast(`${k.name} is verwyder`);
+  if(!kid()){ $('settings').close(); openWho(); }
+}
 function fillSettings(){
+  renderSettingsKids();
   $('sRate').value = settings.rate; $('sRateVal').textContent = Math.round(settings.rate*100) + '%';
   $('sKey').value = settings.azureKey; $('sRegion').value = settings.region; $('sVoice').value = settings.voice;
   $('voiceStatus').textContent = settings.azureKey ? 'Azure-stem aan' : (afVoice ? 'Toestelstem: ' + afVoice.name : 'Toestelstem');
