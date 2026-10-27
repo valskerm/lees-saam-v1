@@ -1,0 +1,969 @@
+<!doctype html>
+<html lang="af">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lees Saam</title>
+<meta name="description" content="Afrikaanse leesstories vir kinders, met ’n mikrofoon wat hoor hoe jy lees.">
+<meta name="theme-color" content="#FFC83D">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Lees Saam">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sky:#E6F2FA; --paper:#FFFFFF; --rule:#BFDCEF; --margin:#F3A6A6;
+  --ink:#1D2F5C; --muted:#5E6E8C; --line:#D3E3F0;
+  --sun:#FFC83D; --sun-ink:#3A2A00;
+  --go:#18A957; --go-bg:#D6F6E3; --go-glow:rgba(24,169,87,.55);
+  --help:#2B6DE0; --help-bg:#E0EAFF; --miss:#B57B00; --miss-bg:#FFF0C4;
+  --l1:#FF9F43; --l2:#2EC4A6; --l3:#4D8DFF; --l4:#A66BFF;
+  --btn:#1D2F5C; --btn-ink:#FFFFFF;
+  color-scheme: light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --sky:#0F1A2E; --paper:#18243B; --rule:#2A3D5E; --margin:#6B3A44;
+    --ink:#EAF1FF; --muted:#9EB0CF; --line:#2A3A57;
+    --sun:#FFC83D; --sun-ink:#2A1E00;
+    --go:#4BE08A; --go-bg:#15402A; --go-glow:rgba(75,224,138,.5);
+    --help:#8DB2FF; --help-bg:#1E2F55; --miss:#F5C451; --miss-bg:#3D3112;
+    --btn:#EAF1FF; --btn-ink:#0F1A2E;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --sky:#0F1A2E; --paper:#18243B; --rule:#2A3D5E; --margin:#6B3A44;
+  --ink:#EAF1FF; --muted:#9EB0CF; --line:#2A3A57;
+  --sun:#FFC83D; --sun-ink:#2A1E00;
+  --go:#4BE08A; --go-bg:#15402A; --go-glow:rgba(75,224,138,.5);
+  --help:#8DB2FF; --help-bg:#1E2F55; --miss:#F5C451; --miss-bg:#3D3112;
+  --btn:#EAF1FF; --btn-ink:#0F1A2E;
+  color-scheme: dark;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--sky);color:var(--ink);font-family:"Andika","Comic Neue","Trebuchet MS",system-ui,sans-serif;font-size:18px;line-height:1.5;min-height:100%}
+h1,h2,h3,button,.fred{font-family:"Fredoka","Andika","Trebuchet MS",system-ui,sans-serif}
+button{cursor:pointer;font-size:1rem;border:0;color:inherit;background:none}
+button:focus-visible,input:focus-visible,select:focus-visible,.word:focus-visible{outline:3px solid var(--help);outline-offset:3px}
+.wrap{max-width:820px;margin:0 auto;padding:16px 18px 40px}
+.top{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.top h1{font-size:1.6rem;margin:0;flex:1;font-weight:700;letter-spacing:.2px}
+.top h1 .logo{display:inline-block;background:var(--sun);color:var(--sun-ink);border-radius:12px;padding:0 10px;margin-right:6px;transform:rotate(-3deg)}
+.iconbtn{width:46px;height:46px;border-radius:14px;background:var(--paper);border:2px solid var(--line);font-size:1.25rem;display:grid;place-items:center}
+.pill{background:var(--paper);border:2px solid var(--line);border-radius:999px;padding:6px 12px;font-weight:600;white-space:nowrap}
+.hello{font-size:1.15rem;color:var(--muted);margin:0 0 20px}
+.level{margin:26px 0 10px;display:flex;align-items:baseline;gap:10px}
+.level h2{margin:0;font-size:1.3rem}
+.level span{color:var(--muted);font-size:.95rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px}
+.story{position:relative;text-align:left;background:var(--paper);border-radius:18px;padding:16px 16px 14px;border:2px solid var(--line);border-top:8px solid var(--lvl);display:flex;flex-direction:column;gap:4px;min-height:150px;transition:transform .12s}
+.story:hover{transform:translateY(-2px)}
+.story .em{font-size:2.2rem;line-height:1}
+.story b{font-size:1.15rem;font-weight:600}
+.story small{color:var(--muted);font-family:"Andika",sans-serif}
+.stars{color:var(--sun);font-size:1.1rem;letter-spacing:2px;margin-top:auto}
+.stars .off{color:var(--line)}
+.badge{position:absolute;top:10px;right:10px;background:var(--sun);color:var(--sun-ink);font-weight:700;font-size:.8rem;border-radius:999px;padding:2px 10px}
+.practice-card{display:flex;align-items:center;gap:14px;width:100%;background:var(--paper);border:2px dashed var(--help);border-radius:18px;padding:14px 16px;text-align:left;margin-top:8px}
+.practice-card .em{font-size:2rem}
+/* reader */
+.rhead{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.rhead h2{margin:0;font-size:1.35rem;flex:1}
+.dots{display:flex;gap:6px;justify-content:center;margin:6px 0 14px}
+.dots i{width:12px;height:12px;border-radius:50%;background:var(--line)}
+.dots i.done{background:var(--go)}
+.dots i.now{background:var(--ink);transform:scale(1.2)}
+.page{position:relative;background:var(--paper);border-radius:20px;padding:34px 22px 34px 46px;min-height:220px;display:flex;align-items:center;
+  background-image:repeating-linear-gradient(to bottom,transparent 0,transparent calc(var(--lh) - 2px),var(--rule) calc(var(--lh) - 2px),var(--rule) var(--lh));
+  background-position:0 26px;--lh:clamp(64px,10vw,84px);box-shadow:0 8px 0 var(--line);transition:box-shadow .3s}
+.page::before{content:"";position:absolute;left:30px;top:0;bottom:0;width:2px;background:var(--margin)}
+.page.done{box-shadow:0 8px 0 var(--go),0 0 0 4px var(--go-glow)}
+.sentence{font-size:clamp(30px,6.4vw,50px);line-height:var(--lh);display:flex;flex-wrap:wrap;column-gap:.32em;font-weight:700}
+.word{border-radius:12px;padding:0 .12em;position:relative;cursor:pointer;transition:background .25s,color .25s;-webkit-tap-highlight-color:transparent;user-select:none}
+.word:hover{background:var(--help-bg)}
+.word.next::after{content:"";position:absolute;left:.12em;right:.12em;bottom:.12em;height:5px;border-radius:3px;background:var(--sun)}
+.word.ok{background:var(--go-bg);color:var(--go);animation:glow 1s ease-out}
+.word.miss{background:var(--miss-bg);color:var(--miss)}
+.word.saying{background:var(--help-bg);color:var(--help);outline:3px solid var(--help)}
+.word.helped::before{content:"";position:absolute;top:.2em;right:-.05em;width:9px;height:9px;border-radius:50%;background:var(--help)}
+@keyframes glow{0%{box-shadow:0 0 0 0 var(--go-glow);transform:scale(1)}30%{transform:scale(1.12);box-shadow:0 0 22px 8px var(--go-glow)}100%{box-shadow:0 0 0 0 transparent;transform:scale(1)}}
+.praise{position:absolute;right:16px;top:-18px;background:var(--go);color:var(--paper);font-family:"Fredoka",sans-serif;font-weight:700;padding:6px 16px;border-radius:999px;opacity:0;transform:translateY(8px) rotate(3deg);transition:.25s}
+.page.done .praise{opacity:1;transform:translateY(0) rotate(3deg)}
+.controls{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;margin-top:26px}
+.ctl{background:var(--paper);border:2px solid var(--line);border-radius:16px;padding:12px 14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;min-height:56px}
+.ctl:disabled{opacity:.4;cursor:default}
+.mic{width:96px;height:96px;border-radius:50%;background:var(--btn);color:var(--btn-ink);font-size:2.4rem;display:grid;place-items:center;position:relative;box-shadow:0 6px 0 rgba(0,0,0,.18)}
+.mic.on{background:#E5484D;color:#fff}
+.mic.on::after{content:"";position:absolute;inset:-8px;border-radius:50%;border:4px solid #E5484D;animation:ring 1.4s infinite}
+@keyframes ring{0%{opacity:.8;transform:scale(.95)}100%{opacity:0;transform:scale(1.25)}}
+.miclabel{text-align:center;font-weight:600;margin-top:8px;font-family:"Fredoka",sans-serif}
+.navrow{display:flex;justify-content:space-between;margin-top:18px;gap:12px}
+.heard{color:var(--muted);font-size:.95rem;min-height:1.5em;text-align:center;margin-top:12px}
+.note{background:var(--miss-bg);color:var(--ink);border-radius:14px;padding:10px 14px;margin-top:14px;font-size:.95rem}
+/* results */
+.result{background:var(--paper);border-radius:22px;padding:28px 22px;text-align:center;border:2px solid var(--line)}
+.result .big{font-size:3rem;letter-spacing:6px;color:var(--sun)}
+.result h2{margin:6px 0 4px;font-size:1.7rem}
+.chips{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:16px 0}
+.chip{background:var(--help-bg);color:var(--help);font-family:"Andika",sans-serif;font-weight:700;font-size:1.35rem;border-radius:14px;padding:6px 14px}
+.actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:12px}
+.primary{background:var(--btn);color:var(--btn-ink);border-radius:16px;padding:12px 20px;font-weight:600;min-height:52px}
+/* settings */
+dialog{border:0;border-radius:22px;padding:0;max-width:min(520px,92vw);width:100%;background:var(--paper);color:var(--ink)}
+dialog::backdrop{background:rgba(10,20,40,.45)}
+.dlg{padding:22px}
+.dlg h2{margin:0 0 12px}
+.field{display:flex;flex-direction:column;gap:6px;margin:14px 0}
+.field label{font-weight:700}
+.field input,.field select{font:inherit;padding:10px 12px;border-radius:12px;border:2px solid var(--line);background:var(--sky);color:var(--ink)}
+.hint{color:var(--muted);font-size:.88rem}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.danger{color:#D93A3F;font-weight:600;padding:10px 0}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(20px);background:var(--btn);color:var(--btn-ink);padding:12px 18px;border-radius:14px;opacity:0;transition:.25s;max-width:90vw;z-index:20;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+[hidden]{display:none!important}
+@media (max-width:520px){
+  .page{padding:28px 14px 28px 36px}
+  .page::before{left:22px}
+  .controls{grid-template-columns:1fr 1fr;grid-template-areas:"mic mic" "a b"}
+  .controls .micwrap{grid-area:mic}
+  .controls .ca{grid-area:a}.controls .cb{grid-area:b}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+.kidpill{display:flex;align-items:center;gap:6px;font-weight:600}
+.kidpill .em{font-size:1.2rem}
+.whogrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px;margin:8px 0 16px}
+.whobtn{background:var(--sky);border:2px solid var(--line);border-radius:16px;padding:12px 8px;display:flex;flex-direction:column;align-items:center;gap:4px;font-weight:600}
+.whobtn .em{font-size:2.2rem;line-height:1.1}
+.whobtn.cur{border-color:var(--go);box-shadow:0 0 0 3px var(--go-glow)}
+.emojirow{display:flex;flex-wrap:wrap;gap:8px}
+.emojirow button{font-size:1.6rem;width:48px;height:48px;border-radius:12px;border:2px solid var(--line);background:var(--sky)}
+.emojirow button[aria-pressed="true"]{border-color:var(--help);background:var(--help-bg)}
+.dlghead{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.dlghead h2{margin:0}
+.closex{font-size:1.4rem;width:40px;height:40px;border-radius:12px}
+.gateq{font-size:2rem;font-family:"Fredoka",sans-serif;font-weight:700;margin:8px 0}
+.err{color:#D93A3F;min-height:1.4em;font-size:.95rem}
+/* teacher */
+.kids{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.kidcard{background:var(--paper);border:2px solid var(--line);border-radius:18px;padding:16px;text-align:left;display:flex;flex-direction:column;gap:10px}
+.kidcard .who{display:flex;align-items:center;gap:10px}
+.kidcard .who .em{font-size:2.2rem}
+.kidcard .who b{font-size:1.25rem;font-family:"Fredoka",sans-serif}
+.kidcard .who small{display:block;color:var(--muted)}
+.nums{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.num{background:var(--sky);border-radius:12px;padding:8px;text-align:center}
+.num b{display:block;font-family:"Fredoka",sans-serif;font-size:1.35rem}
+.num span{font-size:.8rem;color:var(--muted)}
+.minichips{display:flex;flex-wrap:wrap;gap:6px}
+.minichips .chip{font-size:1rem;padding:2px 10px;border-radius:10px}
+.panel{background:var(--paper);border:2px solid var(--line);border-radius:18px;padding:16px 18px;margin-top:14px}
+.panel h3{margin:0 0 10px;font-size:1.15rem}
+.lvlrow{display:grid;grid-template-columns:70px 1fr auto;align-items:center;gap:10px;margin:8px 0}
+.bar{height:14px;border-radius:999px;background:var(--sky);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:999px}
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.95rem;min-width:420px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+th{color:var(--muted);font-weight:700}
+td.st{color:var(--sun);letter-spacing:1px}
+.muted{color:var(--muted)}
+.btnrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HOME -->
+  <section id="home">
+    <div class="top">
+      <h1><span class="logo">Lees</span>Saam</h1>
+      <button class="pill kidpill" id="kidPill" aria-label="Wissel leser"></button>
+      <button class="iconbtn" id="openTeacher" aria-label="Ouer- en onderwyserblad">📊</button>
+      <button class="iconbtn" id="openSettings" aria-label="Instellings">⚙️</button>
+    </div>
+    <p class="hello" id="hello"></p>
+    <div id="practiceSlot"></div>
+    <div id="levels"></div>
+  </section>
+
+  <!-- READER -->
+  <section id="reader" hidden>
+    <div class="rhead">
+      <button class="iconbtn" id="backBtn" aria-label="Terug">←</button>
+      <h2 id="storyTitle"></h2>
+    </div>
+    <div class="dots" id="dots"></div>
+    <div class="page" id="page">
+      <span class="praise" id="praise">Mooi gelees!</span>
+      <div class="sentence" id="sentence"></div>
+    </div>
+    <div class="controls">
+      <button class="ctl ca" id="readSentence">🔊 Lees die sin</button>
+      <div class="micwrap">
+        <button class="mic" id="micBtn" aria-label="Begin lees">🎤</button>
+        <div class="miclabel" id="micLabel">Druk en lees</div>
+      </div>
+      <button class="ctl cb" id="nextBtn">Volgende ▶</button>
+    </div>
+    <div class="heard" id="heard"></div>
+    <div class="note" id="micNote" hidden></div>
+  </section>
+
+  <!-- RESULT -->
+  <section id="result" hidden>
+    <div class="result">
+      <div class="big" id="resStars"></div>
+      <h2 id="resTitle">Baie geluk!</h2>
+      <p id="resText"></p>
+      <div id="resWordsWrap">
+        <p class="hint">Woorde om weer te oefen. Tik om te hoor:</p>
+        <div class="chips" id="resWords"></div>
+      </div>
+      <div class="actions">
+        <button class="ctl" id="againBtn">↻ Lees weer</button>
+        <button class="primary" id="homeBtn">Kies ’n nuwe storie</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEACHER -->
+  <section id="teacher" hidden>
+    <div class="rhead">
+      <button class="iconbtn" id="tBack" aria-label="Terug">←</button>
+      <h2 id="tTitle">Ouer- en onderwyserblad</h2>
+    </div>
+    <div id="tBody"></div>
+  </section>
+</div>
+
+<!-- Who is reading -->
+<dialog id="who">
+  <div class="dlg">
+    <div class="dlghead">
+      <h2>Wie lees vandag?</h2>
+      <button class="closex" id="whoClose" aria-label="Maak toe">✕</button>
+    </div>
+    <div class="whogrid" id="whoGrid"></div>
+    <div class="field">
+      <label for="newName">Voeg ’n leser by</label>
+      <input id="newName" maxlength="24" placeholder="Naam, bv. Mia">
+    </div>
+    <div class="emojirow" id="emojiRow"></div>
+    <div class="row" style="justify-content:flex-end;margin-top:14px">
+      <button class="primary" id="addKid">Voeg leser by</button>
+    </div>
+  </div>
+</dialog>
+
+<!-- Grown-up gate -->
+<dialog id="gate">
+  <div class="dlg">
+    <div class="dlghead">
+      <h2>Net vir grootmense</h2>
+      <button class="closex" id="gateClose" aria-label="Maak toe">✕</button>
+    </div>
+    <p class="muted">Beantwoord die som om die vorderingsblad oop te maak.</p>
+    <div class="gateq" id="gateQ"></div>
+    <div class="field"><input id="gateA" type="number" inputmode="numeric" aria-label="Antwoord"></div>
+    <div class="err" id="gateErr"></div>
+    <div class="row" style="justify-content:flex-end"><button class="primary" id="gateGo">Maak oop</button></div>
+  </div>
+</dialog>
+
+<dialog id="settings">
+  <div class="dlg">
+    <h2>Instellings</h2>
+    <div class="field">
+      <label for="sRate">Leesspoed van die stem</label>
+      <input id="sRate" type="range" min="0.6" max="1.1" step="0.05">
+      <span class="hint" id="sRateVal"></span>
+    </div>
+    <div class="field">
+      <label for="sKey">Azure Speech-sleutel (vir Adri se stem)</label>
+      <input id="sKey" type="password" autocomplete="off" placeholder="Plak jou sleutel hier">
+      <span class="hint">Die sleutel bly net in hierdie blaaier op hierdie toestel. Sonder ’n sleutel gebruik die app die toestel se eie stem.</span>
+    </div>
+    <div class="row">
+      <div class="field" style="flex:1;min-width:150px">
+        <label for="sRegion">Azure-streek</label>
+        <input id="sRegion" placeholder="southafricanorth">
+      </div>
+      <div class="field" style="flex:1;min-width:150px">
+        <label for="sVoice">Stem</label>
+        <select id="sVoice">
+          <option value="af-ZA-AdriNeural">Adri</option>
+          <option value="af-ZA-WillemNeural">Willem</option>
+        </select>
+      </div>
+    </div>
+    <div class="row" style="margin-top:6px">
+      <button class="ctl" id="testVoice">🔊 Toets stem</button>
+      <span class="hint" id="voiceStatus"></span>
+    </div>
+    <div class="row" style="justify-content:flex-end;margin-top:18px">
+      <button class="primary" id="saveSettings">Stoor</button>
+    </div>
+  </div>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ---------- Stories ---------- */
+const LEVELS = {
+  1:{name:'Vlak 1', desc:'Kort, maklike woorde', color:'var(--l1)'},
+  2:{name:'Vlak 2', desc:'Langer sinne', color:'var(--l2)'},
+  3:{name:'Vlak 3', desc:'Klein stories', color:'var(--l3)'},
+  4:{name:'Vlak 4', desc:'Groot lesers', color:'var(--l4)'}
+};
+const STORIES = [
+  // Vlak 1
+  {id:'kat', level:1, emoji:'🐱', title:'Die kat', sentences:['Die kat is groot.','Die kat sit op die mat.','Sy is moeg.','Sy slaap op die mat.']},
+  {id:'hond', level:1, emoji:'🐶', title:'My hond', sentences:['Ek het ’n hond.','My hond is bruin.','Hy hardloop vinnig.','Ons speel in die son.']},
+  {id:'son', level:1, emoji:'☀️', title:'Die son', sentences:['Die son is warm.','Ek sit in die son.','My hoed is rooi.','Ek is bly.']},
+  {id:'vis', level:1, emoji:'🐟', title:'Die vis', sentences:['Kyk, ’n vis!','Die vis is klein.','Hy swem in die dam.','Swem, vis, swem!']},
+  {id:'eend', level:1, emoji:'🦆', title:'Die eend', sentences:['Die eend is geel.','Sy loop na die dam.','Sy spring in die water.','Plons!']},
+  // Vlak 2
+  {id:'bal', level:2, emoji:'⚽', title:'Die rooi bal', sentences:['Sam het ’n rooi bal.','Hy gooi die bal hoog in die lug.','Die bal val in die boom.','Sam klim op en kry sy bal terug.']},
+  {id:'see', level:2, emoji:'🏖️', title:'By die see', sentences:['Ons gaan see toe.','Die water is koud en blou.','Ma bou ’n sandkasteel saam met my.','’n Groot golf spoel dit weg!']},
+  {id:'koek', level:2, emoji:'🎂', title:'Mia se verjaarsdag', sentences:['Vandag is Mia ses jaar oud.','Sy kry ’n groot pienk koek.','Al haar maats sing vir haar.','Mia blaas die kerse uit.']},
+  {id:'tuin', level:2, emoji:'🌱', title:'In Oupa se tuin', sentences:['Oupa plant saad in die tuin.','Ek gooi elke dag water op die grond.','Na ’n week sien ons klein groen blaartjies.','Ons tuin groei!']},
+  {id:'bus', level:2, emoji:'🚌', title:'Die geel bus', sentences:['Ons wag by die bushalte.','Die geel bus kom om die draai.','Die bestuurder groet ons met ’n glimlag.','Ons ry saam skool toe.']},
+  // Vlak 3
+  {id:'skoen', level:3, emoji:'👟', title:'Die verlore skoen', sentences:['Lina kan nie haar skoen kry nie.','Sy soek onder die bed en agter die deur.','Toe hoor sy die hond in die tuin blaf.','Daar lê haar skoen, langs die hond se bak!','“Stoute Bello!” lag sy.']},
+  {id:'ouma', level:3, emoji:'🍪', title:'Ouma se koekies', sentences:['Elke Saterdag bak Ouma koekies.','Ek help om die meel en suiker te meng.','Die kombuis ruik heerlik.','Ons eet die eerste koekie terwyl dit nog warm is.']},
+  {id:'maat', level:3, emoji:'🤝', title:'Die nuwe maat', sentences:['Daar is ’n nuwe seun in ons klas.','Hy sit alleen by die venster en lyk bang.','Met pouse vra ek of hy saam wil speel.','Hy glimlag en sê sy naam is Thabo.','Nou is ons beste maats.']},
+  {id:'vlieer', level:3, emoji:'🪁', title:'Die vlieër', sentences:['Die wind waai sterk oor die veld.','Ek en my broer laat ons vlieër op.','Dit vlieg al hoër en hoër tot by die wolke.','Skielik breek die tou!','Ons hardloop agter die vlieër aan tot by die rivier.']},
+  {id:'muis', level:3, emoji:'🐭', title:'Die muis in die kas', sentences:['Ma hoor ’n geluid in die kombuiskas.','Sy maak die deur stadig oop.','’n Klein grys muis kyk na haar met groot oë.','Ma skrik so dat sy op ’n stoel spring!','Die muis skrik ook en hardloop by die deur uit.']},
+  // Vlak 4
+  {id:'skilpad', level:4, emoji:'🐢', title:'Die klein skilpadjie', sentences:['Op ’n warm somersdag stap Tom langs die rivier.','Skielik sien hy ’n klein skilpadjie wat op sy rug lê.','Die arme diertjie kan nie omdraai nie.','Tom draai hom versigtig om.','Die skilpadjie kyk vir ’n oomblik na hom en kruip dan stadig na die water.']},
+  {id:'storm', level:4, emoji:'⛈️', title:'Die donderstorm', sentences:['Donker wolke pak saam bo die plaas.','Pa roep die kinders om die skape in te jaag.','Die eerste groot druppels slaan op die sinkdak.','Binne in die kombuis drink almal warm sjokolade en luister na die reën.']},
+  {id:'kruger', level:4, emoji:'🦁', title:'’n Nag in die Kruger', sentences:['Ons kamp is diep in die Krugerwildtuin, ver van die stad.','Toe dit donker word, maak Pa ’n vuur en ons braai vleis.','Skielik hoor ons ’n leeu brul, baie naby aan die heining.','My kleinsus kruip dadelik agter Ma weg.','Pa lag en verduidelik dat die leeu ons nie kan bereik nie.','Daardie nag slaap ek met die geluide van Afrika om my.']},
+  {id:'wedloop', level:4, emoji:'🏃', title:'Die groot wedloop', sentences:['Die hele skool sit op die pawiljoen vir die groot wedloop.','Nadia staan senuweeagtig by die beginstreep.','Toe die fluitjie blaas, skiet sy weg soos ’n pyl.','Op die laaste draai gly sy amper, maar sy hou haar balans.','Sy kom tweede, maar sy is trots omdat sy haar beste gegee het.']},
+  {id:'kaart', level:4, emoji:'🗺️', title:'Die ou kaart', sentences:['Op Oupa se solder vind Johan ’n ou, geel kaart.','Iemand het ’n rooi kruis langs die groot bloekomboom geteken.','Hy en sy niggie neem ’n graaf en begin versigtig grawe.','Na ’n uur stamp die graaf teen iets hards.','Dit is ’n ou blikkie vol knope, munte en ’n brief wat Oupa as kind geskryf het.']}
+];
+const PRAISE = ['Mooi gelees!','Uitstekend!','Knap gedoen!','Jy is ’n ster!','Fantasties!','Hou so aan!'];
+const EMOJIS = ['🦁','🐘','🦒','🐢','🦋','🐬','🦉','🐝','🦄','🐸'];
+
+/* ---------- State & storage ---------- */
+const $ = id => document.getElementById(id);
+const LS_SET = 'leessaam.settings', LS_PROG = 'leessaam.progress';
+function lsGet(k, d){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; }catch{ return d; } }
+function lsSet(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch{} }
+
+let settings = Object.assign({rate:0.85, azureKey:'', region:'southafricanorth', voice:'af-ZA-AdriNeural'}, lsGet(LS_SET, {}));
+
+function newKid(name, emoji){
+  return {id:'k' + Date.now().toString(36) + Math.random().toString(36).slice(2,6), name, emoji, best:{}, stats:{}, history:[]};
+}
+function migrate(p){
+  if(p && p.v === 2 && p.profiles) return p;
+  const out = {v:2, current:null, profiles:{}};
+  if(p && (Object.keys(p.best||{}).length || Object.keys(p.stats||{}).length || p.name)){
+    const k = newKid(p.name || 'Leser', '🦁'); k.best = p.best || {}; k.stats = p.stats || {};
+    out.profiles[k.id] = k; out.current = k.id;
+  }
+  return out;
+}
+let progress = migrate(lsGet(LS_PROG, null));
+function kid(){ return progress.profiles[progress.current] || null; }
+function kidsList(){ return Object.values(progress.profiles); }
+
+/* Optional cloud save when hosted on claude.ai (private to the signed-in person) */
+let progDoc = null, saveTimer = null, saving = false, saveAgain = false;
+(async () => {
+  try{
+    if(!window.claude || !window.claude.use) return;
+    const [db, user] = await Promise.all([claude.use('db'), claude.use('user')]);
+    if(!db || !user) return;
+    const id = await user.id();
+    if(!id) return;
+    progDoc = db.doc('data/users/' + id + '/state');
+    const snap = await progDoc.get();
+    if(snap.exists){
+      const d = snap.data() || {};
+      if(d.progress){ progress = migrate(d.progress); lsSet(LS_PROG, progress); refreshVisible(); }
+    }
+  }catch(e){ progDoc = null; }
+})();
+function saveProgress(){
+  lsSet(LS_PROG, progress);
+  if(!progDoc) return;
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(flushSave, 800);
+}
+async function flushSave(){
+  if(saving){ saveAgain = true; return; }
+  saving = true;
+  try{ await progDoc.set({progress: JSON.parse(JSON.stringify(progress))}); }catch(e){}
+  saving = false;
+  if(saveAgain){ saveAgain = false; flushSave(); }
+}
+
+/* ---------- Text helpers ---------- */
+function stripAccents(s){ return s.normalize('NFD').replace(/\p{M}/gu,''); }
+function norm(s){ return stripAccents(s.toLowerCase().replace(/[’'`´ʼ]/g,'')).replace(/[^\p{L}\p{N}]/gu,''); }
+function cleanWord(s){ return s.replace(/^[^\p{L}’']+|[^\p{L}]+$/gu,''); }
+function esc(s){ return String(s).replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c])); }
+const ALIASES = { n:['n','a','un','en','ən'] };
+function lev(a,b){
+  const m=a.length,n=b.length; if(!m) return n; if(!n) return m;
+  let prev=Array.from({length:n+1},(_,i)=>i);
+  for(let i=1;i<=m;i++){ const cur=[i]; for(let j=1;j<=n;j++){ cur[j]=Math.min(prev[j]+1,cur[j-1]+1,prev[j-1]+(a[i-1]===b[j-1]?0:1)); } prev=cur; }
+  return prev[n];
+}
+function matches(heard, key){
+  const h = norm(heard); if(!h) return false;
+  if(h === key) return true;
+  if(ALIASES[key] && ALIASES[key].includes(h)) return true;
+  if(key.length <= 3) return false;
+  const d = lev(h, key);
+  return key.length >= 7 ? d <= 2 : d <= 1;
+}
+
+/* ---------- Speech: Azure (Adri) with device fallback ---------- */
+const audioCache = new Map();
+let currentAudio = null, speaking = false;
+function xmlEsc(s){ return s.replace(/[<>&"']/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&apos;'}[c])); }
+async function speakAzure(text, rate){
+  const pct = Math.round((rate-1)*100);
+  const k = settings.voice+'|'+pct+'|'+text;
+  let url = audioCache.get(k);
+  if(!url){
+    const ssml = `<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="af-ZA"><voice name="${settings.voice}"><prosody rate="${pct}%">${xmlEsc(text)}</prosody></voice></speak>`;
+    const r = await fetch(`https://${(settings.region||'southafricanorth').trim()}.tts.speech.microsoft.com/cognitiveservices/v1`,{
+      method:'POST',
+      headers:{'Ocp-Apim-Subscription-Key':settings.azureKey.trim(),'Content-Type':'application/ssml+xml','X-Microsoft-OutputFormat':'audio-24khz-48kbitrate-mono-mp3'},
+      body:ssml
+    });
+    if(!r.ok) throw new Error('Azure '+r.status);
+    url = URL.createObjectURL(await r.blob());
+    audioCache.set(k,url);
+  }
+  await new Promise((res,rej)=>{ const a = new Audio(url); currentAudio = a; a.onended = res; a.onerror = rej; a.play().catch(rej); });
+}
+let afVoice = null;
+function pickVoice(){
+  const vs = (window.speechSynthesis && speechSynthesis.getVoices()) || [];
+  afVoice = vs.find(v=>/^af/i.test(v.lang)) || null;
+}
+if(window.speechSynthesis){ pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+function speakDevice(text, rate){
+  return new Promise((res)=>{
+    if(!window.speechSynthesis){ res(); return; }
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'af-ZA'; if(afVoice) u.voice = afVoice; u.rate = rate;
+    u.onend = res; u.onerror = res;
+    speechSynthesis.speak(u);
+  });
+}
+let azureWarned = false;
+async function speak(text, rate){
+  rate = rate || settings.rate;
+  stopSpeaking(); speaking = true; pauseMic();
+  try{
+    if(settings.azureKey){
+      try{ await speakAzure(text, rate); }
+      catch(e){
+        if(!azureWarned){ toast('Adri se stem kon nie laai nie. Die toestel se stem lees eerder.'); azureWarned = true; }
+        await speakDevice(text, rate);
+      }
+    } else await speakDevice(text, rate);
+  } finally { speaking = false; resumeMic(); }
+}
+function stopSpeaking(){
+  if(currentAudio){ try{ currentAudio.pause(); }catch{} currentAudio = null; }
+  if(window.speechSynthesis) speechSynthesis.cancel();
+}
+
+/* ---------- Speech recognition (Chrome / Edge) ---------- */
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+let rec = null, listening = false, micPaused = false, needFresh = false, sessionStart = 0;
+function ensureRec(){
+  if(rec || !SR) return;
+  rec = new SR();
+  rec.lang = 'af-ZA'; rec.continuous = true; rec.interimResults = true; rec.maxAlternatives = 1;
+  rec.onresult = onResult;
+  rec.onend = () => {
+    if(listening && !micPaused){
+      sessionStart = livePtr; needFresh = false;
+      setTimeout(()=>{ if(listening && !micPaused){ try{ rec.start(); }catch{} } }, 120);
+    }
+  };
+  rec.onerror = e => {
+    if(e.error === 'not-allowed' || e.error === 'service-not-allowed'){
+      listening = false; updateMic();
+      showMicNote('Die mikrofoon is nie toegelaat nie. Gee die blaaier toestemming vir die mikrofoon en probeer weer.');
+    } else if(e.error === 'network'){
+      toast('Die stemherkenning het internet nodig.');
+    } else if(e.error === 'language-not-supported'){
+      listening = false; updateMic();
+      showMicNote('Hierdie blaaier ken nie Afrikaanse stemherkenning nie. Probeer Chrome of Edge.');
+    }
+  };
+}
+function startListening(){
+  if(!SR){ showMicNote('Die mikrofoon werk in Chrome of Edge. Jy kan steeds woorde tik om hulle te hoor.'); return; }
+  ensureRec();
+  listening = true; micPaused = false; needFresh = false; sessionStart = livePtr;
+  try{ rec.start(); }catch{}
+  updateMic(); updateWords();
+}
+function stopListening(){
+  listening = false; micPaused = false;
+  try{ rec && rec.abort(); }catch{}
+  updateMic(); updateWords(); $('heard').textContent = '';
+}
+function pauseMic(){ if(listening && !micPaused){ micPaused = true; needFresh = true; try{ rec.abort(); }catch{} } }
+function resumeMic(){
+  if(listening && micPaused){
+    micPaused = false; needFresh = false; sessionStart = livePtr;
+    try{ rec.start(); }catch{}
+  }
+}
+function freshSession(){ needFresh = true; if(listening && !micPaused){ try{ rec.abort(); }catch{} } }
+
+function onResult(ev){
+  if(needFresh || micPaused || completing || speaking) return;
+  let txt = '';
+  for(let i=0;i<ev.results.length;i++) txt += ev.results[i][0].transcript + ' ';
+  txt = txt.trim();
+  $('heard').textContent = txt ? 'Ek hoor: ' + txt : '';
+  const tokens = txt.split(/\s+/).filter(Boolean);
+  let p = sessionStart;
+  for(const t of tokens){
+    if(p >= words.length) break;
+    if(matches(t, words[p].key)){ markOk(p); p++; continue; }
+    if(p+1 < words.length && matches(t, words[p+1].key)){
+      if(state[p] !== 'ok') state[p] = 'miss';
+      markOk(p+1); p += 2; continue;
+    }
+  }
+  if(p > livePtr) livePtr = p;
+  updateWords();
+  if(livePtr >= words.length) completeSentence();
+}
+function markOk(i){
+  if(state[i] !== 'ok'){ state[i] = 'ok'; const el = wordEls[i]; if(el){ el.classList.remove('ok'); void el.offsetWidth; } }
+}
+
+/* ---------- Reader ---------- */
+let story = null, sIdx = 0, words = [], wordEls = [], state = [], helped = [], livePtr = 0, completing = false;
+let tally = null;
+function newTally(){ return {words:0, ok:0, help:0, miss:0, listen:0, helpedWords:new Set(), missedWords:new Set(), start:Date.now()}; }
+
+function openStory(st){
+  if(!kid()){ openWho(); return; }
+  story = st; sIdx = 0; tally = newTally();
+  show('reader');
+  $('storyTitle').textContent = st.emoji + ' ' + st.title;
+  $('micNote').hidden = true;
+  if(!SR) showMicNote('Die mikrofoon werk in Chrome of Edge. Jy kan steeds woorde tik om hulle te hoor.');
+  loadSentence();
+}
+function loadSentence(){
+  completing = false;
+  const s = story.sentences[sIdx];
+  words = s.split(/\s+/).map(t => ({text:t, clean:cleanWord(t), key:norm(t)})).filter(w => w.key);
+  state = words.map(()=> ''); helped = words.map(()=> false); livePtr = 0;
+  const box = $('sentence'); box.innerHTML = '';
+  wordEls = words.map((w,i) => {
+    const sp = document.createElement('span');
+    sp.className = 'word'; sp.textContent = w.text; sp.tabIndex = 0; sp.setAttribute('role','button');
+    sp.setAttribute('aria-label', 'Hoor ' + w.clean);
+    const go = () => tapWord(i);
+    sp.addEventListener('click', go);
+    sp.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' '){ e.preventDefault(); go(); } });
+    box.appendChild(sp); return sp;
+  });
+  $('page').classList.remove('done');
+  $('heard').textContent = '';
+  renderDots(); updateWords(); freshSession();
+  $('nextBtn').textContent = sIdx === story.sentences.length-1 ? 'Klaar ✓' : 'Volgende ▶';
+}
+function renderDots(){
+  $('dots').innerHTML = story.sentences.map((_,i)=>`<i class="${i<sIdx?'done':i===sIdx?'now':''}"></i>`).join('');
+}
+function updateWords(){
+  wordEls.forEach((el,i) => {
+    el.classList.toggle('ok', state[i]==='ok');
+    el.classList.toggle('miss', state[i]==='miss');
+    el.classList.toggle('helped', helped[i]);
+    el.classList.toggle('next', listening && i===livePtr && state[i]!=='ok');
+  });
+}
+async function tapWord(i){
+  helped[i] = true; updateWords();
+  const el = wordEls[i]; el.classList.add('saying');
+  await speak(words[i].clean, Math.max(0.6, settings.rate - 0.1));
+  el.classList.remove('saying');
+}
+function completeSentence(){
+  if(completing) return; completing = true;
+  recordSentence();
+  $('praise').textContent = PRAISE[Math.floor(Math.random()*PRAISE.length)];
+  $('page').classList.add('done');
+  setTimeout(() => { if(completing && !$('reader').hidden) goNext(true); }, 1500);
+}
+function recordSentence(){
+  const k = kid(); if(!k) return;
+  words.forEach((w,i) => {
+    const key = w.clean.toLowerCase(); if(!key) return;
+    const s = k.stats[key] || (k.stats[key] = {ok:0, help:0, miss:0});
+    tally.words++;
+    if(helped[i]){ s.help++; tally.help++; tally.helpedWords.add(w.clean); }
+    else if(state[i]==='miss'){ s.miss++; tally.miss++; tally.missedWords.add(w.clean); }
+    else if(state[i]==='ok'){ s.ok++; tally.ok++; }
+  });
+  saveProgress();
+}
+function goNext(auto){
+  if(!auto && !completing && state.some(s=>s) ) recordSentence();
+  if(sIdx < story.sentences.length-1){ sIdx++; loadSentence(); }
+  else finishStory();
+}
+function goPrev(){ if(sIdx>0){ sIdx--; loadSentence(); } }
+
+function finishStory(){
+  stopListening();
+  const k = kid();
+  const units = tally.help + tally.miss + tally.listen;
+  const ratio = tally.words ? units / tally.words : 1;
+  const stars = tally.words === 0 ? 1 : ratio === 0 ? 3 : ratio <= 0.15 ? 2 : 1;
+  if(k){
+    if(story.id !== 'oefen') k.best[story.id] = Math.max(k.best[story.id]||0, stars);
+    k.history.push({story:story.id, title:story.title, level:story.level||0, date:Date.now(),
+      secs:Math.round((Date.now()-tally.start)/1000), stars, words:tally.words, ok:tally.ok,
+      help:tally.help, miss:tally.miss, listen:tally.listen});
+    if(k.history.length > 400) k.history = k.history.slice(-400);
+    saveProgress();
+  }
+  show('result');
+  $('resStars').textContent = '★'.repeat(stars) + '☆'.repeat(3-stars);
+  const nm = k ? ', ' + k.name : '';
+  $('resTitle').textContent = stars===3 ? 'Wonderlik' + nm + '!' : stars===2 ? 'Baie goed' + nm + '!' : 'Goed gedoen' + nm + '!';
+  $('resText').textContent = 'Jy het “' + story.title + '” klaar gelees.';
+  const list = [...new Set([...tally.helpedWords, ...tally.missedWords])];
+  $('resWordsWrap').hidden = !list.length;
+  fillChips($('resWords'), list);
+  speak(stars===3 ? 'Baie geluk! Jy het die hele storie mooi gelees.' : 'Baie geluk! Jy het die storie klaar gelees.');
+}
+function fillChips(host, list){
+  host.innerHTML = '';
+  list.forEach(w => { const b = document.createElement('button'); b.className='chip'; b.textContent=w; b.onclick=()=>speak(w, Math.max(0.6, settings.rate-0.1)); host.appendChild(b); });
+}
+
+/* ---------- Learning the reader ---------- */
+function practiceWords(k){
+  if(!k) return [];
+  return Object.entries(k.stats)
+    .map(([w,s]) => ({w, score:(s.help + s.miss*1.5) - s.ok*0.6}))
+    .filter(x => x.score > 0.3)
+    .sort((a,b) => b.score - a.score)
+    .slice(0, 10).map(x => x.w);
+}
+function recommended(k){
+  if(!k) return STORIES[0];
+  return STORIES.find(s => (k.best[s.id]||0) < 2) || null;
+}
+function practiceStory(k){ return {id:'oefen', level:0, emoji:'🎯', title:'Oefenwoorde', sentences: practiceWords(k)}; }
+function summary(k){
+  let ok=0, help=0, miss=0;
+  Object.values(k.stats).forEach(s => { ok+=s.ok; help+=s.help; miss+=s.miss; });
+  const tot = ok+help+miss;
+  const weekAgo = Date.now() - 7*864e5;
+  const real = k.history.filter(h => h.story !== 'oefen');
+  const rec = recommended(k);
+  return {
+    acc: tot ? Math.round(ok/tot*100) : null,
+    stars: Object.values(k.best).reduce((a,b)=>a+b,0),
+    done: STORIES.filter(s => k.best[s.id]).length,
+    week: k.history.filter(h => h.date >= weekAgo).length,
+    minutes: Math.round(k.history.reduce((a,h)=>a+(h.secs||0),0)/60),
+    last: k.history.length ? k.history[k.history.length-1].date : null,
+    level: rec ? rec.level : 4,
+    sessions: real.length,
+    tricky: practiceWords(k)
+  };
+}
+function fmtDate(t){
+  try{ return new Date(t).toLocaleDateString('af-ZA',{day:'numeric', month:'short'}); }
+  catch{ return new Date(t).toISOString().slice(0,10); }
+}
+function ago(t){
+  if(!t) return 'Nog nie gelees nie';
+  const d = Math.floor((Date.now()-t)/864e5);
+  return d === 0 ? 'Laas gelees: vandag' : d === 1 ? 'Laas gelees: gister' : 'Laas gelees: ' + d + ' dae gelede';
+}
+
+/* ---------- Home ---------- */
+function renderHome(){
+  const k = kid();
+  $('kidPill').innerHTML = k ? `<span class="em">${k.emoji}</span>${esc(k.name)}` : '<span class="em">👤</span>Kies leser';
+  $('hello').textContent = k ? `Hallo, ${k.name}! Kies ’n storie om te lees.` : 'Hallo! Tik bo om te kies wie lees.';
+  const pw = practiceWords(k);
+  $('practiceSlot').innerHTML = '';
+  if(pw.length){
+    const b = document.createElement('button'); b.className = 'practice-card';
+    b.innerHTML = `<span class="em">🎯</span><span><b class="fred">Oefenwoorde</b><br><small>${pw.length} woord${pw.length>1?'e':''} om weer te oefen</small></span>`;
+    b.onclick = () => openStory(practiceStory(k));
+    $('practiceSlot').appendChild(b);
+  }
+  const rec = recommended(k);
+  const host = $('levels'); host.innerHTML = '';
+  Object.entries(LEVELS).forEach(([lv, L]) => {
+    const head = document.createElement('div'); head.className = 'level';
+    head.innerHTML = `<h2>${L.name}</h2><span>${L.desc}</span>`;
+    host.appendChild(head);
+    const g = document.createElement('div'); g.className = 'grid';
+    STORIES.filter(s => s.level == lv).forEach(s => {
+      const best = k ? (k.best[s.id] || 0) : 0;
+      const b = document.createElement('button'); b.className = 'story'; b.style.setProperty('--lvl', L.color);
+      b.innerHTML = `${rec && rec.id===s.id ? '<span class="badge">Volgende!</span>' : ''}<span class="em">${s.emoji}</span><b>${s.title}</b><small>${s.sentences.length} sinne</small><span class="stars">${'★'.repeat(best)}<span class="off">${'★'.repeat(3-best)}</span></span>`;
+      b.onclick = () => openStory(s);
+      g.appendChild(b);
+    });
+    host.appendChild(g);
+  });
+}
+
+/* ---------- Who is reading ---------- */
+let pickedEmoji = EMOJIS[0];
+function openWho(){
+  const grid = $('whoGrid'); grid.innerHTML = '';
+  kidsList().forEach(k => {
+    const b = document.createElement('button');
+    b.className = 'whobtn' + (k.id === progress.current ? ' cur' : '');
+    b.innerHTML = `<span class="em">${k.emoji}</span>${esc(k.name)}`;
+    b.onclick = () => { progress.current = k.id; saveProgress(); $('who').close(); renderHome(); };
+    grid.appendChild(b);
+  });
+  grid.hidden = !kidsList().length;
+  $('whoClose').hidden = !kid();
+  const used = new Set(kidsList().map(k=>k.emoji));
+  pickedEmoji = EMOJIS.find(e => !used.has(e)) || EMOJIS[0];
+  const row = $('emojiRow'); row.innerHTML = '';
+  EMOJIS.forEach(e => {
+    const b = document.createElement('button'); b.textContent = e; b.setAttribute('aria-pressed', e===pickedEmoji);
+    b.setAttribute('aria-label','Kies ' + e);
+    b.onclick = () => { pickedEmoji = e; [...row.children].forEach(c => c.setAttribute('aria-pressed', c.textContent===e)); };
+    row.appendChild(b);
+  });
+  $('newName').value = '';
+  if(!$('who').open) $('who').showModal();
+}
+$('addKid').onclick = () => {
+  const name = $('newName').value.trim();
+  if(!name){ $('newName').focus(); toast('Tik eers ’n naam.'); return; }
+  const k = newKid(name, pickedEmoji);
+  progress.profiles[k.id] = k; progress.current = k.id; saveProgress();
+  $('who').close(); renderHome(); toast(`Welkom, ${name}!`);
+};
+$('newName').addEventListener('keydown', e => { if(e.key==='Enter') $('addKid').click(); });
+$('whoClose').onclick = () => $('who').close();
+$('who').addEventListener('cancel', e => { if(!kid()) e.preventDefault(); });
+$('kidPill').onclick = openWho;
+
+/* ---------- Grown-up gate ---------- */
+let gateAns = 0;
+function openGate(){
+  const a = 3 + Math.floor(Math.random()*7), b = 3 + Math.floor(Math.random()*7);
+  gateAns = a*b; $('gateQ').textContent = `${a} × ${b} = ?`;
+  $('gateA').value = ''; $('gateErr').textContent = '';
+  $('gate').showModal(); setTimeout(()=>$('gateA').focus(), 50);
+}
+$('gateGo').onclick = () => {
+  if(parseInt($('gateA').value,10) === gateAns){ $('gate').close(); openTeacher(); }
+  else { $('gateErr').textContent = 'Nie reg nie. Probeer weer.'; openGateNewQ(); }
+};
+function openGateNewQ(){ const a = 3 + Math.floor(Math.random()*7), b = 3 + Math.floor(Math.random()*7); gateAns=a*b; $('gateQ').textContent = `${a} × ${b} = ?`; $('gateA').value=''; }
+$('gateA').addEventListener('keydown', e => { if(e.key==='Enter') $('gateGo').click(); });
+$('gateClose').onclick = () => $('gate').close();
+$('openTeacher').onclick = openGate;
+
+/* ---------- Teacher / parent view ---------- */
+let tKid = null;
+function openTeacher(){ tKid = null; show('teacher'); renderTeacher(); }
+function renderTeacher(){
+  const body = $('tBody'); body.innerHTML = '';
+  if(tKid && progress.profiles[tKid]) return renderKidDetail(progress.profiles[tKid]);
+  $('tTitle').textContent = 'Ouer- en onderwyserblad';
+  const kids = kidsList();
+  if(!kids.length){
+    body.innerHTML = `<div class="panel"><p>Daar is nog geen lesers nie.</p><button class="primary" id="tAdd">Voeg ’n leser by</button></div>`;
+    $('tAdd').onclick = openWho; return;
+  }
+  const grid = document.createElement('div'); grid.className = 'kids';
+  kids.forEach(k => {
+    const s = summary(k);
+    const card = document.createElement('button'); card.className = 'kidcard';
+    card.innerHTML = `
+      <div class="who"><span class="em">${k.emoji}</span><span><b>${esc(k.name)}</b><small>${ago(s.last)}</small></span></div>
+      <div class="nums">
+        <div class="num"><b>${s.acc===null?'–':s.acc+'%'}</b><span>woorde reg</span></div>
+        <div class="num"><b>${s.done}/${STORIES.length}</b><span>stories</span></div>
+        <div class="num"><b>${s.week}</b><span>hierdie week</span></div>
+      </div>
+      <div class="muted">Lees tans op <b>${LEVELS[s.level].name}</b></div>
+      ${s.tricky.length ? `<div class="minichips">${s.tricky.slice(0,5).map(w=>`<span class="chip">${esc(w)}</span>`).join('')}</div>` : '<div class="muted">Nog geen moeilike woorde nie</div>'}`;
+    card.onclick = () => { tKid = k.id; renderTeacher(); window.scrollTo(0,0); };
+    grid.appendChild(card);
+  });
+  body.appendChild(grid);
+  const actions = document.createElement('div'); actions.className = 'btnrow'; actions.style.marginTop = '16px';
+  actions.innerHTML = `<button class="ctl" id="tAdd">＋ Voeg leser by</button><button class="ctl" id="tCsv">⬇ Laai alle vordering af (CSV)</button>`;
+  body.appendChild(actions);
+  $('tAdd').onclick = openWho;
+  $('tCsv').onclick = exportCsv;
+}
+function renderKidDetail(k){
+  const s = summary(k);
+  $('tTitle').textContent = k.emoji + ' ' + k.name;
+  const body = $('tBody');
+  const lvRows = Object.entries(LEVELS).map(([lv,L]) => {
+    const st = STORIES.filter(x => x.level == lv);
+    const done = st.filter(x => k.best[x.id]).length;
+    const stars = st.reduce((a,x)=>a+(k.best[x.id]||0),0);
+    return `<div class="lvlrow"><b>${L.name}</b><div class="bar"><i style="width:${Math.round(done/st.length*100)}%;background:${L.color}"></i></div><span class="muted">${done}/${st.length} · ${stars}★</span></div>`;
+  }).join('');
+  const hist = k.history.slice().reverse().slice(0,20).map(h => {
+    const helpPct = h.words ? Math.round((h.help+h.miss)/h.words*100) : 0;
+    return `<tr><td>${fmtDate(h.date)}</td><td>${esc(h.title)}</td><td class="st">${'★'.repeat(h.stars)}</td><td>${h.words}</td><td>${h.help}</td><td>${h.miss}</td><td>${helpPct}%</td><td>${h.secs?Math.max(1,Math.round(h.secs/60))+' min':'–'}</td></tr>`;
+  }).join('');
+  body.innerHTML = `
+    <div class="nums" style="grid-template-columns:repeat(auto-fit,minmax(110px,1fr))">
+      <div class="num"><b>${s.acc===null?'–':s.acc+'%'}</b><span>woorde reg gelees</span></div>
+      <div class="num"><b>${s.stars}</b><span>sterre</span></div>
+      <div class="num"><b>${s.done}/${STORIES.length}</b><span>stories klaar</span></div>
+      <div class="num"><b>${s.week}</b><span>sessies hierdie week</span></div>
+      <div class="num"><b>${s.minutes}</b><span>minute gelees</span></div>
+    </div>
+    <div class="panel"><h3>Vordering per vlak</h3>${lvRows}
+      <p class="muted" style="margin:10px 0 0">Aanbeveel: ${(() => { const r = recommended(k); return r ? `“${esc(r.title)}” (${LEVELS[r.level].name})` : 'Al die stories is goed gelees!'; })()}</p></div>
+    <div class="panel"><h3>Woorde wat oefening nodig het</h3>
+      <div class="chips" id="kTricky" style="justify-content:flex-start"></div>
+      ${s.tricky.length ? '<button class="primary" id="kPractice">Laat '+esc(k.name)+' hierdie woorde oefen</button>' : '<p class="muted">Nog niks nie. Woorde verskyn hier wanneer ’n leser hulp vra of ’n woord oorslaan.</p>'}
+    </div>
+    <div class="panel"><h3>Onlangse leessessies</h3>
+      ${hist ? `<div class="tablewrap"><table><thead><tr><th>Datum</th><th>Storie</th><th>Sterre</th><th>Woorde</th><th>Getik</th><th>Oorgeslaan</th><th>Hulp</th><th>Tyd</th></tr></thead><tbody>${hist}</tbody></table></div>` : '<p class="muted">Nog geen sessies nie.</p>'}
+    </div>
+    <div class="btnrow" style="margin-top:16px">
+      <button class="primary" id="kRead">Laat ${esc(k.name)} nou lees</button>
+      <button class="ctl" id="kRename">Hernoem</button>
+      <button class="ctl" id="kReset">Begin vordering oor</button>
+      <button class="ctl danger" id="kDelete">Verwyder leser</button>
+    </div>`;
+  fillChips($('kTricky'), s.tricky);
+  if($('kPractice')) $('kPractice').onclick = () => { progress.current = k.id; saveProgress(); openStory(practiceStory(k)); };
+  $('kRead').onclick = () => { progress.current = k.id; saveProgress(); show('home'); renderHome(); };
+  $('kRename').onclick = () => { const n = prompt('Nuwe naam:', k.name); if(n && n.trim()){ k.name = n.trim().slice(0,24); saveProgress(); renderTeacher(); } };
+  $('kReset').onclick = () => { if(confirm(`Vee al ${k.name} se sterre, oefenwoorde en sessies uit?`)){ k.best={}; k.stats={}; k.history=[]; saveProgress(); renderTeacher(); } };
+  $('kDelete').onclick = () => {
+    if(!confirm(`Verwyder ${k.name} heeltemal?`)) return;
+    delete progress.profiles[k.id];
+    if(progress.current === k.id) progress.current = (kidsList()[0]||{}).id || null;
+    saveProgress(); tKid = null; renderTeacher();
+  };
+}
+async function exportCsv(){
+  const q = v => '"' + String(v).replace(/"/g,'""') + '"';
+  const rows = [['Leser','Datum','Storie','Vlak','Sterre','Woorde','Reg','Getik vir hulp','Oorgeslaan','Sin geluister','Sekondes'].map(q).join(',')];
+  kidsList().forEach(k => k.history.forEach(h => rows.push([k.name, new Date(h.date).toISOString().slice(0,16).replace('T',' '), h.title, h.level||'', h.stars, h.words, h.ok??'', h.help, h.miss, h.listen, h.secs||''].map(q).join(','))));
+  const csv = '\ufeff' + rows.join('\n');
+  const filename = 'lees-saam-vordering-' + new Date().toISOString().slice(0,10) + '.csv';
+  try{
+    const dl = window.claude && window.claude.use ? await claude.use('downloads') : null;
+    if(dl){ await dl.save({filename, data:csv}); return; }
+  }catch(e){ if(e && e.code && e.code !== 'unavailable') return; }
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv'}));
+  a.download = filename; document.body.appendChild(a); a.click(); a.remove();
+}
+$('tBack').onclick = () => { if(tKid){ tKid = null; renderTeacher(); } else { show('home'); renderHome(); } };
+
+/* ---------- UI plumbing ---------- */
+function show(id){
+  ['home','reader','result','teacher'].forEach(s => $(s).hidden = s !== id);
+  window.scrollTo(0,0);
+}
+function refreshVisible(){
+  if(!$('home').hidden) renderHome();
+  if(!$('teacher').hidden) renderTeacher();
+}
+function updateMic(){
+  $('micBtn').classList.toggle('on', listening);
+  $('micBtn').setAttribute('aria-label', listening ? 'Stop' : 'Begin lees');
+  $('micLabel').textContent = listening ? 'Ek luister…' : 'Druk en lees';
+}
+function showMicNote(t){ $('micNote').textContent = t; $('micNote').hidden = false; }
+let toastT;
+function toast(t){ const el = $('toast'); el.textContent = t; el.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(()=>el.classList.remove('show'), 3200); }
+
+$('micBtn').onclick = () => listening ? stopListening() : startListening();
+$('readSentence').onclick = async () => {
+  tally.listen++;
+  const b = $('readSentence'); b.disabled = true;
+  await speak(story.sentences[sIdx]);
+  b.disabled = false;
+};
+$('nextBtn').onclick = () => goNext(false);
+$('backBtn').onclick = () => { stopListening(); stopSpeaking(); show('home'); renderHome(); };
+$('homeBtn').onclick = () => { stopSpeaking(); show('home'); renderHome(); };
+$('againBtn').onclick = () => { stopSpeaking(); openStory(story); };
+
+let tx = null;
+$('page').addEventListener('touchstart', e => tx = e.touches[0].clientX, {passive:true});
+$('page').addEventListener('touchend', e => { if(tx===null) return; const dx = e.changedTouches[0].clientX - tx; if(dx > 80) goPrev(); tx = null; });
+
+/* settings */
+function fillSettings(){
+  $('sRate').value = settings.rate; $('sRateVal').textContent = Math.round(settings.rate*100) + '%';
+  $('sKey').value = settings.azureKey; $('sRegion').value = settings.region; $('sVoice').value = settings.voice;
+  $('voiceStatus').textContent = settings.azureKey ? 'Azure-stem aan' : (afVoice ? 'Toestelstem: ' + afVoice.name : 'Toestelstem');
+}
+function readSettings(){
+  settings.rate = parseFloat($('sRate').value);
+  settings.azureKey = $('sKey').value.trim();
+  settings.region = $('sRegion').value.trim() || 'southafricanorth';
+  settings.voice = $('sVoice').value;
+  audioCache.clear(); azureWarned = false;
+}
+$('openSettings').onclick = () => { fillSettings(); $('settings').showModal(); };
+$('sRate').oninput = () => $('sRateVal').textContent = Math.round($('sRate').value*100) + '%';
+$('testVoice').onclick = async () => {
+  readSettings();
+  $('voiceStatus').textContent = 'Toets…';
+  if(settings.azureKey){
+    try{ await speakAzure('Hallo! Ek is jou leesmaat. Kom ons lees saam.', settings.rate); $('voiceStatus').textContent = 'Azure-stem werk ✓'; }
+    catch(e){ $('voiceStatus').textContent = 'Azure het nie geantwoord nie (' + (e.message||'fout') + '). Gaan die sleutel en streek na.'; }
+  } else {
+    await speakDevice('Hallo! Kom ons lees saam.', settings.rate);
+    $('voiceStatus').textContent = afVoice ? 'Toestelstem: ' + afVoice.name : 'Geen Afrikaanse toestelstem nie. ’n Azure-sleutel klink beter.';
+  }
+};
+$('saveSettings').onclick = () => { readSettings(); lsSet(LS_SET, settings); $('settings').close(); toast('Instellings gestoor'); };
+['settings','gate'].forEach(id => $(id).addEventListener('click', e => { if(e.target === $(id)) $(id).close(); }));
+
+renderHome();
+if(!kid()) openWho();
+
+/* Offline support + "Add to Home Screen" (GitHub Pages) */
+if('serviceWorker' in navigator && location.protocol === 'https:'){
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(()=>{}));
+}
+</script>
+</body>
+</html>

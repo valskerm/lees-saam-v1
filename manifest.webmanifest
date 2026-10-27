@@ -1,0 +1,17 @@
+{
+  "name": "Lees Saam – Afrikaanse leesapp",
+  "short_name": "Lees Saam",
+  "description": "Afrikaanse leesstories vir kinders, met ’n mikrofoon wat hoor hoe jy lees.",
+  "lang": "af",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#E6F2FA",
+  "theme_color": "#FFC83D",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
